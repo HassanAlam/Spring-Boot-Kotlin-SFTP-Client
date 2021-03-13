@@ -21,6 +21,8 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.jcraft:jsch:0.1.55")
+    implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.2")
+
 
 }
 
