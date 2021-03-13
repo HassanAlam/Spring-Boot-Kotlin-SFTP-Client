@@ -1,4 +1,4 @@
-package com.sftp.client.learnkotlin
+package com.sftp.client.learnkotlin.jsch
 
 import com.jcraft.jsch.*
 import com.sftp.client.learnkotlin.Util.Util
@@ -28,7 +28,7 @@ class JschConfig {
 
     }
 
-    fun removeKnownHostSetting(jschSession: Session) {
+    private fun removeKnownHostSetting(jschSession: Session) {
         val config = Properties()
         config["StrictHostKeyChecking"] = "no"
         config["PreferredAuthentications"] = "publickey,keyboard-interactive,password"
@@ -41,7 +41,7 @@ class JschConfig {
         }
     }
 
-    fun isPassword(loginDetails: LoginDetails, jschSession: Session) {
+   private fun isPassword(loginDetails: LoginDetails, jschSession: Session) {
         if (!Util.isNullOrEmpty(loginDetails.userPassword)) {
             jschSession.setPassword(loginDetails.userPassword)
         }
