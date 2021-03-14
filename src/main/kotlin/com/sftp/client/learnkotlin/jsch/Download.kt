@@ -1,16 +1,14 @@
 package com.sftp.client.learnkotlin.jsch
 
-import com.jcraft.jsch.ChannelSftp
-import com.jcraft.jsch.SftpException
-import com.sftp.client.learnkotlin.model.Settings
+import com.sftp.client.learnkotlin.model.LoginSettings
 
 class Download {
 
 
-    fun downloadFile(settings: Settings) {
+    fun downloadFile(loginSettings: LoginSettings) {
     }
 
-    fun downloadFiles(settings: Settings) {
+    fun downloadFiles(loginSettings: LoginSettings) {
     }
 
 }

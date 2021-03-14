@@ -1,13 +1,13 @@
 package com.sftp.client.learnkotlin.jsch
 
-import com.sftp.client.learnkotlin.model.Settings
+import com.sftp.client.learnkotlin.model.LoginSettings
 
 class Upload {
 
-    fun uploadFile(settings: Settings) {
+    fun uploadFile(loginSettings: LoginSettings) {
     }
 
-    fun uploadFiles(settings: Settings) {
+    fun uploadFiles(loginSettings: LoginSettings) {
     }
 
 }

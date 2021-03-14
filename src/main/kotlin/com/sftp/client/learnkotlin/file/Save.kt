@@ -1,30 +1,24 @@
 package com.sftp.client.learnkotlin.file
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.sftp.client.learnkotlin.model.Settings
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Component
-import java.awt.SystemColor.text
-import java.io.File
+import com.sftp.client.learnkotlin.model.Login
+import com.sftp.client.learnkotlin.model.LoginDetails
+import com.sftp.client.learnkotlin.model.LoginSettings
 import java.io.FileWriter
-import java.io.IOException
-import java.nio.file.Files
-import java.nio.file.Paths
-import java.nio.file.StandardOpenOption
+
 
 class Save {
 
     private val fileLocation = "settings/settings.json"
     val objectMapper = ObjectMapper()
+    val list = Login(mutableListOf<LoginSettings>())
 
 
     fun saveToJsonFile(){
 
-        val settings = Settings("test",
-        "","",
-            "","",
-            "","",
+        val settings = LoginSettings(
+            LoginDetails("","","","","",""),
+            "",
             "","",
             "","",
             2,"",
@@ -32,8 +26,11 @@ class Save {
             "","",
             ""
         )
-            val fw = FileWriter(fileLocation, true)
-            fw.write(objectMapper.writeValueAsString(settings) + "\n")
+
+        list.login.add(settings)
+
+        val fw = FileWriter(fileLocation, false)
+            fw.write(objectMapper.writeValueAsString(list) + "\n")
             fw.close()
     }
 
