@@ -1,1 +1,24 @@
-{"login":[{"loginDetails":{"userName":"","userPassword":"","privateKeyFile":"","privateKeyPassword":"","host":"","port":""},"fileModDateTime":"","forceFile":"","deleteSource":"","archiveSource":"","unzipFile":"","transactionType":"","localDirectoryPath":"","addDateToEndOfFilename":"","remoteDirectoryPath":"","minimumFileAgeMinutes":2,"fileModDateMillisTime":"","fileName":""}]}
+{
+  "login" : [ {
+    "loginDetails" : {
+      "userName" : "",
+      "userPassword" : "",
+      "privateKeyFile" : "",
+      "privateKeyPassword" : "",
+      "host" : "",
+      "port" : ""
+    },
+    "transactionType" : "",
+    "localDirectoryPath" : "",
+    "remoteDirectoryPath" : "",
+    "fileName" : "",
+    "deleteSource" : "",
+    "minimumFileAgeMinutes" : 2,
+    "fileModDateTime" : "",
+    "fileModDateMillisTime" : "",
+    "archiveSource" : "",
+    "addDateToEndOfFilename" : "",
+    "unzipFile" : "",
+    "forceFile" : ""
+  } ]
+}
