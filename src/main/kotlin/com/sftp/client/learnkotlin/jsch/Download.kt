@@ -12,14 +12,9 @@ import java.util.*
 class Download {
 
     private val LOG: Logger = LoggerFactory.getLogger(Download::class.java)
-
-
     var jschConfig = JschConfig()
 
-
     fun downloadFile(loginSettings: LoginSettings) {
-
-        //Open SFTP Connetion
         val channelSftp: ChannelSftp = setupJschConnection(loginSettings) as ChannelSftp
         try{
             channelSftp.connect()
@@ -32,9 +27,10 @@ class Download {
                     if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
                         LOG.info("Downloading file");
 
+                        downloadFile(loginSettings,channelSftp)
+                        processFile(loginSettings,channelSftp)
                         TODO("Not done yet")
-
-
+                        logResult()
                     }
                 }
             }
@@ -43,7 +39,42 @@ class Download {
             channelSftp.exit();
             channelSftp.disconnect();
         }
+    }
 
+    private fun logResult() {
+        TODO("Not yet implemented")
+    }
+
+    private fun processFile(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
+        unzipFile()
+        archiveFile()
+        deleteFile()
+        addDateToFilname()
+    }
+
+    private fun addDateToFilname() {
+        TODO("Not yet implemented")
+    }
+
+    private fun deleteFile() {
+        TODO("Not yet implemented")
+    }
+
+    private fun archiveFile() {
+        TODO("Not yet implemented")
+    }
+
+    private fun unzipFile() {
+        TODO("Not yet implemented")
+    }
+
+    private fun downloadFile(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
+        channelSftp.get(loginSettings.remoteDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING");
+        renameTmpNameToOrigAfterDownload(loginSettings)
+    }
+
+    private fun renameTmpNameToOrigAfterDownload(loginSettings: LoginSettings) {
+        Util.renameFile(loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING", loginSettings.localDirectoryPath + loginSettings.fileName)
     }
 
     private fun setupJschConnection(loginSettings: LoginSettings): Channel? {
