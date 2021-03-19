@@ -7,6 +7,8 @@ import com.sftp.client.learnkotlin.Util.Util
 import com.sftp.client.learnkotlin.model.LoginSettings
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class Download {
@@ -48,16 +50,25 @@ class Download {
     private fun processFile(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
         unzipFile()
         archiveFile()
-        deleteFile()
-        addDateToFilname()
+        deleteFile(loginSettings, channelSftp)
+        addDateToFilname(loginSettings)
     }
 
-    private fun addDateToFilname() {
-        TODO("Not yet implemented")
+    private fun addDateToFilname(loginSettings: LoginSettings) {
+        val myDateObj = LocalDateTime.now()
+        val myFormatObj = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm")
+        val formattedDate = myDateObj.format(myFormatObj)
+
+        if (loginSettings.addDateToEndOfFilename == "1") {
+            TODO("Not yet implemented")
+        }
+
     }
 
-    private fun deleteFile() {
-        TODO("Not yet implemented")
+    private fun deleteFile(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
+        if (loginSettings.deleteSource == "1") {
+            channelSftp.rm(loginSettings.remoteDirectoryPath + loginSettings.fileName)
+        }
     }
 
     private fun archiveFile() {
