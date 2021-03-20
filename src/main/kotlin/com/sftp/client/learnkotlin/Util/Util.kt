@@ -35,5 +35,12 @@ class Util {
             return file.renameTo(file2)
         }
 
+        fun getFileExtension(file: String): String {
+            val lastIndexOf = file.lastIndexOf(".")
+            return if (lastIndexOf == -1) {
+                "" // empty extension
+            } else file.substring(lastIndexOf)
+        }
+
     }
 }
