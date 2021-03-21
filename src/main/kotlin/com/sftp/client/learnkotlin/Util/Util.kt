@@ -42,5 +42,14 @@ class Util {
             } else file.substring(lastIndexOf)
         }
 
+        fun getFileWithoutExtension(fileName: String): String {
+            val index = fileName.lastIndexOf('.')
+            return if (index == -1) {
+                fileName
+            } else {
+                fileName.substring(0, index)
+            }
+        }
+
     }
 }
