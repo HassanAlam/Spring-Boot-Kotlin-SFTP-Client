@@ -75,8 +75,15 @@ class Download {
         TODO("Not yet implemented")
     }
 
-    private fun unzipFile() {
-        TODO("Not yet implemented")
+    private fun unzipFile(loginSettings: LoginSettings) {
+        if (loginSettings.unzipFile == "1") {
+            Util.unzip(loginSettings.localDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath)
+            Util.archiveFilesLocal(
+                loginSettings.localDirectoryPath,
+                loginSettings.localDirectoryPath + loginSettings.fileName,
+                loginSettings.localDirectoryPath + "/Archive/" + loginSettings.fileName
+            )
+        }
     }
 
     private fun downloadFile(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
@@ -107,8 +114,8 @@ class Download {
         TODO("Not yet implemented")
     }
 
-    private fun getMinutesSinceLastMod(lsEntry: ChannelSftp.LsEntry?): Long {
-        TODO("Not done yet")
+    private fun getMinutesSinceLastMod(lsEntry: ChannelSftp.LsEntry): Long {
+        return (System.currentTimeMillis() - getEntryMillisMod(lsEntry)) / 60000
     }
 
 }

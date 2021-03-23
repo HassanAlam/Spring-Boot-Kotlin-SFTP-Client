@@ -1,5 +1,6 @@
 package com.sftp.client.learnkotlin.Util
 
+import com.sftp.client.learnkotlin.model.LoginSettings
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +19,15 @@ class Util {
             }
         }
 
-        fun convertMillistoDate(milliseconds: Long): String? {
+        fun unzip(zipFilePath: String, destDirectory: String) {
+            val destDir: File = File(destDirectory)
+            if (!destDir.exists()) {
+                destDir.mkdir()
+            }
+            TODO("Not yet implemented")
+        }
+
+            fun convertMillistoDate(milliseconds: Long): String? {
             val date = Date(milliseconds)
             val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss")
             return sdf.format(date)
@@ -49,6 +58,10 @@ class Util {
             } else {
                 fileName.substring(0, index)
             }
+        }
+
+        fun archiveFilesLocal(localDirectoryPath: String, s: String, s1: String) {
+            TODO("Not yet implemented")
         }
 
     }
