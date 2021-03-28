@@ -1,12 +1,23 @@
 package com.sftp.client.learnkotlin.Util
 
 import com.sftp.client.learnkotlin.model.LoginSettings
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.File
+import java.io.IOException
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
+import java.nio.file.StandardCopyOption
 import java.text.SimpleDateFormat
 import java.util.*
 
 class Util {
     companion object{
+
+        private val LOG: Logger = LoggerFactory.getLogger(Util.javaClass)
+
+
         fun isNullOrEmpty(str: String): Boolean {
             return if (str == null || str.trim { it <= ' ' }.length == 0) true else false
         }
@@ -60,7 +71,22 @@ class Util {
             }
         }
 
-        fun archiveFilesLocal(localDirectoryPath: String, s: String, s1: String) {
+        fun archiveFilesLocal(localDirectoryPath: String, src: String, dest: String) {
+            File("$localDirectoryPath/Archive/").mkdir()
+            var result: Path? = null
+            try {
+                result = Files.move(Paths.get(src), Paths.get(dest), StandardCopyOption.REPLACE_EXISTING)
+            } catch (e: IOException) {
+                LOG.info("Exception while moving file: {}", e.message)
+            }
+            if (result != null) {
+                LOG.info("File moved successfully.")
+            } else {
+                LOG.info("File movement failed.")
+            }
+        }
+
+        fun archiveFilesSFTP(loginSettings: LoginSettings) {
             TODO("Not yet implemented")
         }
 
