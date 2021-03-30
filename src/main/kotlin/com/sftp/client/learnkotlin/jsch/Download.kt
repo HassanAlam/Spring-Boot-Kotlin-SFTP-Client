@@ -36,42 +36,47 @@ class Download {
     }
 
     private fun downloadMatchingFile(loginSettings: LoginSettings, list: Vector<LsEntry>, channelSftp: ChannelSftp) {
-        //loginSettings.fileName == list.get(0).longname
-        val minutesSinceLastMod: Long = getMinutesSinceLastMod(list[0])
-        if (compareLastFileDate(loginSettings.fileModDateMillisTime, list.get(0)) || isForce(loginSettings.forceFile))  {
-            if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
-                LOG.info("Downloading file");
-                processFile(loginSettings,channelSftp)
-
-
-                TODO("Not done yet")
-                logResult()
+        if(fileNameIsFilledOut(loginSettings)){
+            val minutesSinceLastMod: Long = getMinutesSinceLastMod(list[0])
+            if (compareLastFileDate(loginSettings.fileModDateMillisTime, list.get(0)) || isForce(loginSettings.forceFile)) {
+                if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
+                    LOG.info("Downloading file");
+                    processFile(loginSettings, channelSftp)
+                    logResult()
+                }
             }
         }
-
-
         channelSftp.get(loginSettings.remoteDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING");
         renameTmpNameToOrigAfterDownload(loginSettings)
     }
 
     fun downloadAllFiles(loginSettings: LoginSettings, list: Vector<LsEntry>, channelSftp: ChannelSftp) {
-        for (entry in list) {
-            //skip download if its an dir
-            if (!entry.attrs.isDir) {
-                val minutesSinceLastMod = getMinutesSinceLastMod(entry)
+        if(!fileNameIsFilledOut(loginSettings)) {
+            for (entry in list) {
+                //skip download if its an dir
+                if (!entry.attrs.isDir) {
+                    val minutesSinceLastMod = getMinutesSinceLastMod(entry)
 
-                //compare lastDownloadDate vs lastModified
-                if (compareLastFileDate(loginSettings.fileModDateMillisTime, entry) || isForce(loginSettings.forceFile)) {
-                    if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
-                        LOG.info("Downloading files")
-                        processFile(loginSettings,channelSftp)
-                        TODO("Not done yet")
-
+                    //compare lastDownloadDate vs lastModified
+                    if (compareLastFileDate(
+                            loginSettings.fileModDateMillisTime,
+                            entry
+                        ) || isForce(loginSettings.forceFile)
+                    ) {
+                        if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
+                            LOG.info("Downloading files")
+                            processFile(loginSettings, channelSftp)
+                            logResult()
+                        }
                     }
                 }
             }
         }
     }
+
+
+    private fun fileNameIsFilledOut(loginSettings: LoginSettings) =
+        !Util.isNullOrEmpty(loginSettings.fileName)
 
 
     private fun logResult() {
@@ -88,7 +93,7 @@ class Download {
     }
 
     private fun downloadFileWithTmpName(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
-        TODO("Not yet implemented")
+        channelSftp.get(loginSettings.remoteDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING")
     }
 
     private fun addDateToFilname(loginSettings: LoginSettings) {

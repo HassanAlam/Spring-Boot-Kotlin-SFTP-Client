@@ -38,49 +38,18 @@ class Start {
 
     fun downloadFiles(loginSettings: LoginSettings){
         if (isDownload(loginSettings)) {
-            if (fileNameIsFilledOut(loginSettings)) {
-                makeDownloadMatchingFiles(loginSettings)
-            }
-            if (fileNameIsNotFilledOut(loginSettings)) {
-                makeDownloadAllFilesSFTP(loginSettings)
-            }
+
+            download.startDownload(loginSettings)
 
         }
     }
 
     fun uploadFiles(loginSettings: LoginSettings){
         if (isUpload(loginSettings)) {
-            if (fileNameIsFilledOut(loginSettings)) {
-                makeUploadMatchingFiles(loginSettings)
-            }
-            if (fileNameIsNotFilledOut(loginSettings)) {
-                makeUploadAllFilesSFTP(loginSettings)
-            }
+
+            upload.startUpload(loginSettings)
+
         }
-    }
-
-    private fun makeDownloadMatchingFiles(loginSettings: LoginSettings) {
-        TODO("Not yet implemented")
-    }
-
-    private fun makeDownloadAllFilesSFTP(loginSettings: LoginSettings) {
-        TODO("Not yet implemented")
-    }
-
-    private fun makeUploadAllFilesSFTP(loginSettings: LoginSettings) {
-        TODO("Not yet implemented")
-    }
-
-    private fun makeUploadMatchingFiles(loginSettings: LoginSettings) {
-        TODO("Not yet implemented")
-    }
-
-    private fun fileNameIsNotFilledOut(loginSettings: LoginSettings): Boolean {
-        return !Util.isNullOrEmpty(loginSettings.fileName)
-    }
-
-    private fun fileNameIsFilledOut(loginSettings: LoginSettings): Boolean {
-        return Util.isNullOrEmpty(loginSettings.fileName)
     }
 
     fun isUpload(loginSettings: LoginSettings): Boolean {

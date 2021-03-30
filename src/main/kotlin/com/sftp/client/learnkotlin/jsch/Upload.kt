@@ -5,6 +5,12 @@ import java.io.File
 
 class Upload {
 
+
+    fun startUpload(loginSettings: LoginSettings) {
+        TODO("Not yet implemented")
+    }
+
+
     fun uploadFile(loginSettings: LoginSettings) {
         TODO("Not yet implemented")
     }
@@ -22,6 +28,5 @@ class Upload {
     fun isForce(force: String): Boolean {
         return force == "1"
     }
-
 
 }
