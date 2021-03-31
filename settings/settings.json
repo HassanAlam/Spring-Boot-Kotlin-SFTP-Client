@@ -8,17 +8,19 @@
       "host" : "",
       "port" : ""
     },
-    "transactionType" : "",
-    "localDirectoryPath" : "",
+    "id" : "1",
+    "scheduledTime" : "0 * * ? * *",
+    "transactionType" : "Download",
+    "localDirectoryPath" : "C:\\Users\\hassa\\Desktop\\SFTPtest\\",
     "remoteDirectoryPath" : "",
-    "fileName" : "",
-    "deleteSource" : "",
-    "minimumFileAgeMinutes" : 2,
-    "fileModDateTime" : "",
-    "fileModDateMillisTime" : "",
-    "archiveSource" : "",
-    "addDateToEndOfFilename" : "",
-    "unzipFile" : "",
-    "forceFile" : ""
+    "fileName" : "hassan.txt",
+    "deleteSource" : "0",
+    "minimumFileAgeMinutes" : 0,
+    "fileModDateTime" : "0",
+    "fileModDateMillisTime" : "0",
+    "archiveSource" : "0",
+    "addDateToEndOfFilename" : "0",
+    "unzipFile" : "0",
+    "forceFile" : "1"
   } ]
 }
