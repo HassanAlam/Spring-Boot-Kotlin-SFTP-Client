@@ -3,6 +3,7 @@ package com.sftp.client.learnkotlin.jsch
 import com.jcraft.jsch.Channel
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.ChannelSftp.LsEntry
+import com.jcraft.jsch.SftpException
 import com.sftp.client.learnkotlin.Util.Utils
 import com.sftp.client.learnkotlin.model.LoginSettings
 import org.slf4j.Logger
@@ -41,13 +42,11 @@ class Download {
             if (compareLastFileDate(loginSettings.fileModDateMillisTime, list.get(0)) || isForce(loginSettings.forceFile)) {
                 if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
                     LOG.info("Downloading file");
-                    processFile(loginSettings, channelSftp)
+                    processFile(loginSettings, loginSettings.fileName,  channelSftp)
                     logResult()
                 }
             }
         }
-        channelSftp.get(loginSettings.remoteDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING");
-        renameTmpNameToOrigAfterDownload(loginSettings)
     }
 
     fun downloadAllFiles(loginSettings: LoginSettings, list: Vector<LsEntry>, channelSftp: ChannelSftp) {
@@ -65,7 +64,7 @@ class Download {
                     ) {
                         if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
                             LOG.info("Downloading files")
-                            processFile(loginSettings, channelSftp)
+                            processFile(loginSettings,entry.filename, channelSftp)
                             logResult()
                         }
                     }
@@ -80,61 +79,62 @@ class Download {
 
 
     private fun logResult() {
-        TODO("Not yet implemented")
+        println("Not yet implemented")
     }
 
-    private fun processFile(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
-        downloadFileWithTmpName(loginSettings, channelSftp)
-        renameTmpNameToOrigAfterDownload(loginSettings)
-        unzipFile(loginSettings)
-        archiveFile(loginSettings)
-        deleteFile(loginSettings, channelSftp)
-        addDateToFilname(loginSettings)
+    private fun processFile(loginSettings: LoginSettings,fileName: String, channelSftp: ChannelSftp) {
+        downloadFileWithTmpName(loginSettings,fileName, channelSftp)
+        renameTmpNameToOrigAfterDownload(loginSettings,fileName)
+        unzipFile(loginSettings,fileName)
+        archiveFile(loginSettings,fileName)
+        deleteFile(loginSettings,fileName, channelSftp)
+        addDateToFilname(loginSettings,fileName)
     }
 
-    private fun downloadFileWithTmpName(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
-        channelSftp.get(loginSettings.remoteDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING")
+    @Throws(SftpException::class)
+    private fun downloadFileWithTmpName(loginSettings: LoginSettings, fileName: String, channelSftp: ChannelSftp) {
+    channelSftp[loginSettings.remoteDirectoryPath + fileName, loginSettings.localDirectoryPath + "~" + fileName + ".DOWNLOADING"]
     }
 
-    private fun addDateToFilname(loginSettings: LoginSettings) {
+    private fun addDateToFilname(loginSettings: LoginSettings, fileName: String) {
         val myDateObj = LocalDateTime.now()
         val myFormatObj = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm")
         val formattedDate = myDateObj.format(myFormatObj)
 
         if (loginSettings.addDateToEndOfFilename == "1") {
             Utils.renameFile(
-                loginSettings.localDirectoryPath + loginSettings.fileName,
+                loginSettings.localDirectoryPath + fileName,
                     Utils.getFileWithoutExtension(
-                    loginSettings.localDirectoryPath + loginSettings.fileName
-                ).toString() + "_" + formattedDate + Utils.getFileExtension(loginSettings.fileName)
+                    loginSettings.localDirectoryPath + fileName
+                ) + "_" + formattedDate + Utils.getFileExtension(fileName)
             )
         }
     }
 
-    private fun deleteFile(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
+    private fun deleteFile(loginSettings: LoginSettings,fileName: String, channelSftp: ChannelSftp) {
         if (loginSettings.deleteSource == "1") {
-            channelSftp.rm(loginSettings.remoteDirectoryPath + loginSettings.fileName)
+            channelSftp.rm(loginSettings.remoteDirectoryPath + fileName)
         }
     }
 
-    private fun archiveFile(loginSettings: LoginSettings) {
+    private fun archiveFile(loginSettings: LoginSettings, fileName: String) {
         if (loginSettings.archiveSource == "1") {
             Utils.archiveFilesSFTP(loginSettings)
         }    }
 
-    private fun unzipFile(loginSettings: LoginSettings) {
+    private fun unzipFile(loginSettings: LoginSettings, fileName: String) {
         if (loginSettings.unzipFile == "1") {
-            Utils.unzip(loginSettings.localDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath)
+            Utils.unzip(loginSettings.localDirectoryPath + fileName, loginSettings.localDirectoryPath)
             Utils.archiveFilesLocal(
                 loginSettings.localDirectoryPath,
-                loginSettings.localDirectoryPath + loginSettings.fileName,
-                loginSettings.localDirectoryPath + "/Archive/" + loginSettings.fileName
+                loginSettings.localDirectoryPath + fileName,
+                loginSettings.localDirectoryPath + "/Archive/" + fileName
             )
         }
     }
 
-    private fun renameTmpNameToOrigAfterDownload(loginSettings: LoginSettings) {
-        Utils.renameFile(loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING", loginSettings.localDirectoryPath + loginSettings.fileName)
+    private fun renameTmpNameToOrigAfterDownload(loginSettings: LoginSettings, fileName: String) {
+        Utils.renameFile(loginSettings.localDirectoryPath + "~" + fileName + ".DOWNLOADING", loginSettings.localDirectoryPath + fileName)
     }
 
     private fun setupJschConnection(loginSettings: LoginSettings): Channel? {
