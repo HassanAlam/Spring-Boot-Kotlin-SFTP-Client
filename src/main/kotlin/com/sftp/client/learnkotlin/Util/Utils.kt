@@ -12,10 +12,10 @@ import java.nio.file.StandardCopyOption
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Util {
+class Utils {
     companion object{
 
-        private val LOG: Logger = LoggerFactory.getLogger(Util.javaClass)
+        private val LOG: Logger = LoggerFactory.getLogger(Utils.javaClass)
 
 
         fun isNullOrEmpty(str: String): Boolean {

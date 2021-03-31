@@ -8,7 +8,6 @@ import com.sftp.client.learnkotlin.model.LoginSettings
 import java.io.File
 import java.io.FileWriter
 
-
 class Save {
 
     private val fileLocation = "settings/settings.json"

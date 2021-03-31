@@ -3,7 +3,7 @@ package com.sftp.client.learnkotlin.jsch
 import com.jcraft.jsch.Channel
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.ChannelSftp.LsEntry
-import com.sftp.client.learnkotlin.Util.Util
+import com.sftp.client.learnkotlin.Util.Utils
 import com.sftp.client.learnkotlin.model.LoginSettings
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -76,7 +76,7 @@ class Download {
 
 
     private fun fileNameIsFilledOut(loginSettings: LoginSettings) =
-        !Util.isNullOrEmpty(loginSettings.fileName)
+        !Utils.isNullOrEmpty(loginSettings.fileName)
 
 
     private fun logResult() {
@@ -102,14 +102,13 @@ class Download {
         val formattedDate = myDateObj.format(myFormatObj)
 
         if (loginSettings.addDateToEndOfFilename == "1") {
-            Util.renameFile(
+            Utils.renameFile(
                 loginSettings.localDirectoryPath + loginSettings.fileName,
-                Util.getFileWithoutExtension(
+                    Utils.getFileWithoutExtension(
                     loginSettings.localDirectoryPath + loginSettings.fileName
-                ).toString() + "_" + formattedDate + Util.getFileExtension(loginSettings.fileName)
+                ).toString() + "_" + formattedDate + Utils.getFileExtension(loginSettings.fileName)
             )
         }
-
     }
 
     private fun deleteFile(loginSettings: LoginSettings, channelSftp: ChannelSftp) {
@@ -120,13 +119,13 @@ class Download {
 
     private fun archiveFile(loginSettings: LoginSettings) {
         if (loginSettings.archiveSource == "1") {
-            Util.archiveFilesSFTP(loginSettings)
+            Utils.archiveFilesSFTP(loginSettings)
         }    }
 
     private fun unzipFile(loginSettings: LoginSettings) {
         if (loginSettings.unzipFile == "1") {
-            Util.unzip(loginSettings.localDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath)
-            Util.archiveFilesLocal(
+            Utils.unzip(loginSettings.localDirectoryPath + loginSettings.fileName, loginSettings.localDirectoryPath)
+            Utils.archiveFilesLocal(
                 loginSettings.localDirectoryPath,
                 loginSettings.localDirectoryPath + loginSettings.fileName,
                 loginSettings.localDirectoryPath + "/Archive/" + loginSettings.fileName
@@ -135,7 +134,7 @@ class Download {
     }
 
     private fun renameTmpNameToOrigAfterDownload(loginSettings: LoginSettings) {
-        Util.renameFile(loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING", loginSettings.localDirectoryPath + loginSettings.fileName)
+        Utils.renameFile(loginSettings.localDirectoryPath + "~" + loginSettings.fileName + ".DOWNLOADING", loginSettings.localDirectoryPath + loginSettings.fileName)
     }
 
     private fun setupJschConnection(loginSettings: LoginSettings): Channel? {
@@ -143,7 +142,7 @@ class Download {
     }
 
     fun compareLastFileDate(lastUploadedFileModMillisDate: String, entry: ChannelSftp.LsEntry): Boolean {
-        return Util.convertToLong(lastUploadedFileModMillisDate) < getEntryMillisMod(entry)
+        return Utils.convertToLong(lastUploadedFileModMillisDate) < getEntryMillisMod(entry)
     }
     fun getEntryMillisMod(lsEntry: ChannelSftp.LsEntry): Long {
         return lsEntry.attrs.mTime * 1000L

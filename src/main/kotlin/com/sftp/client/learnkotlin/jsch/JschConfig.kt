@@ -1,7 +1,7 @@
 package com.sftp.client.learnkotlin.jsch
 
 import com.jcraft.jsch.*
-import com.sftp.client.learnkotlin.Util.Util
+import com.sftp.client.learnkotlin.Util.Utils
 import com.sftp.client.learnkotlin.model.LoginDetails
 import java.util.*
 
@@ -21,7 +21,7 @@ class JschConfig {
 
     private fun isDefaultPort(loginDetails: LoginDetails): Int {
         var portNumber = 22
-        if (!Util.isNullOrEmpty(loginDetails.port)) {
+        if (!Utils.isNullOrEmpty(loginDetails.port)) {
             portNumber = loginDetails.port.toInt()
         }
         return portNumber
@@ -36,13 +36,13 @@ class JschConfig {
     }
 
     private fun isPrivateKey(loginDetails: LoginDetails, jsch: JSch) {
-        if (!Util.isNullOrEmpty(loginDetails.privateKeyFile)) {
+        if (!Utils.isNullOrEmpty(loginDetails.privateKeyFile)) {
             jsch.addIdentity(loginDetails.privateKeyFile, loginDetails.privateKeyPassword)
         }
     }
 
    private fun isPassword(loginDetails: LoginDetails, jschSession: Session) {
-        if (!Util.isNullOrEmpty(loginDetails.userPassword)) {
+        if (!Utils.isNullOrEmpty(loginDetails.userPassword)) {
             jschSession.setPassword(loginDetails.userPassword)
         }
     }
