@@ -5,43 +5,54 @@ import com.sftp.client.learnkotlin.file.Save
 import com.sftp.client.learnkotlin.jsch.Download
 import com.sftp.client.learnkotlin.jsch.Upload
 import com.sftp.client.learnkotlin.model.LoginSettings
+import com.sftp.client.learnkotlin.scheduler.CustomScheduler
+import org.quartz.Job
+import org.quartz.JobExecutionContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.annotation.Scheduled
-import org.springframework.stereotype.Service
+import org.springframework.stereotype.Component
+import java.util.*
 
 
-@Service
-@EnableScheduling
-class Start {
+@Component
+class Start : Job {
 
     private val LOG: Logger = LoggerFactory.getLogger(Start::class.java)
-
 
     val list = Load().loadFromJsonFile()
     private val download: Download = Download()
     private val upload: Upload = Upload()
+    private val customScheduler: CustomScheduler = CustomScheduler()
 
+    @Scheduled(fixedDelay = 120000) //2min
     fun writeCached() {
         Save().saveToJsonFile(list)
     }
 
-    @Scheduled(fixedDelay = 120000) //2min
+    @Autowired
     fun run() {
         println("start")
+        customScheduler.scheduler(list)
+    }
 
-        for(login in list.login){
+    @Override
+    override fun execute(context: JobExecutionContext) {
+        println("I am scheduled on " + Date(System.currentTimeMillis()))
+        System.out.println("MyJob 1" + context.jobDetail.jobDataMap["login"])
+        val login = context.jobDetail.jobDataMap["login"] as LoginSettings
+        execute(login)
+    }
 
+    @Override
+    private fun execute(login: LoginSettings) {
+        try {
             downloadFiles(login)
             uploadFiles(login)
-            try {
-
-            }catch(e :Exception){
-               LOG.error(e.message)
-            }
+        }catch (e: Exception){
+            LOG.error(e.message)
         }
-        writeCached()
     }
 
     fun downloadFiles(loginSettings: LoginSettings){

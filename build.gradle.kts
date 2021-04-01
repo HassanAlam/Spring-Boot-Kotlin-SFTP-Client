@@ -22,7 +22,8 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.jcraft:jsch:0.1.55")
     implementation ("com.fasterxml.jackson.module:jackson-module-kotlin:2.12.2")
-
+    implementation ("org.quartz-scheduler:quartz:2.3.2")
+    implementation ("org.springframework.boot:spring-boot-starter-quartz:2.4.4")
 
 }
 
