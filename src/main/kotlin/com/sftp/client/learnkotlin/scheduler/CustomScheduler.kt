@@ -27,7 +27,7 @@ class CustomScheduler {
         scheduler.setJobFactory(SpringBeanJobFactory())
 
         for(login in list.login){
-            val job = JobBuilder.newJob(Start::class.java).build()
+            val job = JobBuilder.newJob(SftpJob::class.java).build()
             job.jobDataMap["login"] = login
             val trigger = TriggerBuilder.newTrigger().forJob(job).withSchedule(getScheduleBuilder(login.scheduledTime)).build()
 
