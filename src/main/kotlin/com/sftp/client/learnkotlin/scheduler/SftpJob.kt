@@ -1,7 +1,5 @@
 package com.sftp.client.learnkotlin.scheduler
 
-import com.sftp.client.learnkotlin.Start
-import com.sftp.client.learnkotlin.file.Load
 import com.sftp.client.learnkotlin.jsch.Download
 import com.sftp.client.learnkotlin.jsch.Upload
 import com.sftp.client.learnkotlin.model.LoginSettings

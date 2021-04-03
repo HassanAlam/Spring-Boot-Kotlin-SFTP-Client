@@ -9,7 +9,7 @@
       "port" : ""
     },
     "id" : "1",
-    "scheduledTime" : "0 * * ? * *",
+    "scheduledTime" : "0 */5 * ? * *",
     "transactionType" : "Download",
     "localDirectoryPath" : "C:\\Users\\hassa\\Desktop\\SFTPtest\\",
     "remoteDirectoryPath" : "",
