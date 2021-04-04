@@ -1,7 +1,7 @@
 package com.sftp.client.learnkotlin
 
-import com.sftp.client.learnkotlin.file.Load
 import com.sftp.client.learnkotlin.file.Save
+import com.sftp.client.learnkotlin.file.Cache
 import com.sftp.client.learnkotlin.scheduler.CustomScheduler
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,20 +17,18 @@ class Start : CommandLineRunner{
 
     private val LOG: Logger = LoggerFactory.getLogger(Start::class.java)
 
-    val list = Load().loadFromJsonFile()
     private val customScheduler: CustomScheduler = CustomScheduler()
 
     @Scheduled(fixedDelay = 120000) //2min
     fun writeCached() {
         LOG.info("Write cached")
-        Save().saveToJsonFile(list)
+        Save().saveToJsonFile(Cache.settingsCache)
     }
 
     override fun run(vararg args: String?) {
         println("start")
-        customScheduler.scheduler(list)
-        Save().saveToJsonFile(list)
-
+       // customScheduler.scheduler(Cache.settingsCache)
+        Save().saveToJsonFile(Cache.settingsCache)
     }
 
 }

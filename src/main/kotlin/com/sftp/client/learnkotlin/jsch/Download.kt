@@ -6,6 +6,7 @@ import com.jcraft.jsch.ChannelSftp.LsEntry
 import com.jcraft.jsch.SftpException
 import com.sftp.client.learnkotlin.Start
 import com.sftp.client.learnkotlin.Util.Utils
+import com.sftp.client.learnkotlin.file.Cache
 import com.sftp.client.learnkotlin.model.LoginSettings
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -80,7 +81,7 @@ class Download {
 
     private fun logResult(entryMillisMod: Long, loginSettings: LoginSettings) {
         val start = Start()
-        for(login in start.list.login) {
+        for(login in Cache.settingsCache.login) {
             if(login.id == loginSettings.id){
                 login.fileModDateTime = Utils.convertMillistoDate(entryMillisMod).toString()
                 login.fileModDateMillisTime = entryMillisMod.toString()
