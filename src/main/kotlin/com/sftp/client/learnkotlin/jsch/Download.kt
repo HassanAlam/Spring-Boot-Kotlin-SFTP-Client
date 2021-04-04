@@ -4,6 +4,7 @@ import com.jcraft.jsch.Channel
 import com.jcraft.jsch.ChannelSftp
 import com.jcraft.jsch.ChannelSftp.LsEntry
 import com.jcraft.jsch.SftpException
+import com.sftp.client.learnkotlin.Start
 import com.sftp.client.learnkotlin.Util.Utils
 import com.sftp.client.learnkotlin.model.LoginSettings
 import org.slf4j.Logger
@@ -43,7 +44,7 @@ class Download {
                 if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
                     LOG.info("Downloading file");
                     processFile(loginSettings, loginSettings.fileName,  channelSftp)
-                    logResult()
+                    logResult(getEntryMillisMod(list[0]), loginSettings)
                 }
             }
         }
@@ -65,7 +66,7 @@ class Download {
                         if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
                             LOG.info("Downloading files")
                             processFile(loginSettings,entry.filename, channelSftp)
-                            logResult()
+                            logResult(getEntryMillisMod(list[0]), loginSettings)
                         }
                     }
                 }
@@ -77,9 +78,15 @@ class Download {
     private fun fileNameIsFilledOut(loginSettings: LoginSettings) =
         !Utils.isNullOrEmpty(loginSettings.fileName)
 
-
-    private fun logResult() {
-        println("Not yet implemented")
+    private fun logResult(entryMillisMod: Long, loginSettings: LoginSettings) {
+        val start = Start()
+        for(login in start.list.login) {
+            if(login.id == loginSettings.id){
+                login.fileModDateTime = Utils.convertMillistoDate(entryMillisMod).toString()
+                login.fileModDateMillisTime = entryMillisMod.toString()
+                start.writeCached()
+            }
+        }
     }
 
     private fun processFile(loginSettings: LoginSettings,fileName: String, channelSftp: ChannelSftp) {
