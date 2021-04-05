@@ -41,7 +41,7 @@ class Download {
     private fun downloadMatchingFile(loginSettings: LoginSettings, list: Vector<LsEntry>, channelSftp: ChannelSftp) {
         if(fileNameIsFilledOut(loginSettings)){
             val minutesSinceLastMod: Long = getMinutesSinceLastMod(list[0])
-            if (compareLastFileDate(loginSettings.fileModDateMillisTime, list.get(0)) || isForce(loginSettings.forceFile)) {
+            if (compareLastFileDate(loginSettings.fileModDateMillisTime, list[0]) || loginSettings.forceFile) {
                 if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
                     LOG.info("Downloading file");
                     processFile(loginSettings, loginSettings.fileName,  channelSftp)
@@ -62,7 +62,7 @@ class Download {
                     if (compareLastFileDate(
                             loginSettings.fileModDateMillisTime,
                             entry
-                        ) || isForce(loginSettings.forceFile)
+                        ) || loginSettings.forceFile
                     ) {
                         if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
                             LOG.info("Downloading files")
@@ -109,7 +109,7 @@ class Download {
         val myFormatObj = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm")
         val formattedDate = myDateObj.format(myFormatObj)
 
-        if (loginSettings.addDateToEndOfFilename == "1") {
+        if (loginSettings.addDateToEndOfFilename) {
             Utils.renameFile(
                 loginSettings.localDirectoryPath + fileName,
                     Utils.getFileWithoutExtension(
@@ -120,18 +120,18 @@ class Download {
     }
 
     private fun deleteFile(loginSettings: LoginSettings,fileName: String, channelSftp: ChannelSftp) {
-        if (loginSettings.deleteSource == "1") {
+        if (loginSettings.deleteSource) {
             channelSftp.rm(loginSettings.remoteDirectoryPath + fileName)
         }
     }
 
     private fun archiveFile(loginSettings: LoginSettings, fileName: String) {
-        if (loginSettings.archiveSource == "1") {
+        if (loginSettings.archiveSource) {
             Utils.archiveFilesSFTP(loginSettings)
         }    }
 
     private fun unzipFile(loginSettings: LoginSettings, fileName: String) {
-        if (loginSettings.unzipFile == "1") {
+        if (loginSettings.unzipFile) {
             Utils.unzip(loginSettings.localDirectoryPath + fileName, loginSettings.localDirectoryPath)
             Utils.archiveFilesLocal(
                 loginSettings.localDirectoryPath,
@@ -154,10 +154,6 @@ class Download {
     }
     fun getEntryMillisMod(lsEntry: ChannelSftp.LsEntry): Long {
         return lsEntry.attrs.mTime * 1000L
-    }
-
-    fun isForce(force: String): Boolean {
-        return force == "1"
     }
 
     private fun getMinutesSinceLastMod(lsEntry: ChannelSftp.LsEntry): Long {

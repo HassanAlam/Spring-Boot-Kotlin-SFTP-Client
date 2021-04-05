@@ -1,6 +1,6 @@
 package com.sftp.client.learnkotlin.model
 
-class LoginSettings(val loginDetails: LoginDetails, val id: String, val scheduledTime: String, val transactionType: String, val localDirectoryPath: String, val remoteDirectoryPath: String, val fileName: String,
-                    val deleteSource: String, val minimumFileAgeMinutes: Int, var fileModDateTime: String, var fileModDateMillisTime: String, val archiveSource: String,
-                    val addDateToEndOfFilename: String, val unzipFile: String, val forceFile: String) {
+class LoginSettings(var loginDetails: LoginDetails = LoginDetails(), var id: String = "", var scheduledTime: String = "", var transactionType: String = "", var localDirectoryPath: String = "", var remoteDirectoryPath: String = "", var fileName: String = "",
+                    var deleteSource: Boolean = false, var minimumFileAgeMinutes: Int = 0, var fileModDateTime: String = "", var fileModDateMillisTime: String = "", var archiveSource: Boolean = false,
+                    var addDateToEndOfFilename: Boolean = false, var unzipFile: Boolean = false, var forceFile: Boolean = false) {
 }

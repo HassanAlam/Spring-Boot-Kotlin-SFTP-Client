@@ -38,7 +38,7 @@ class Upload {
                 val minutesSinceLastMod = getMinutesSinceLastMod(file.lastModified())
 
                 //compare lastUploadedFileModDate vs lastModified
-                if (Utils.convertToLong(loginSettings.fileModDateMillisTime) < file.lastModified() || isForce(loginSettings.forceFile)) {
+                if (Utils.convertToLong(loginSettings.fileModDateMillisTime) < file.lastModified() || loginSettings.forceFile) {
                     if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
 
                         processFile(loginSettings, file, channelSftp)
@@ -62,7 +62,7 @@ class Upload {
             val minutesSinceLastMod = getMinutesSinceLastMod(file.lastModified())
 
             //compare lastUploadedFileModDate vs lastModified
-            if (Utils.convertToLong(loginSettings.fileModDateMillisTime) < file.lastModified() || isForce(loginSettings.forceFile)) {
+            if (Utils.convertToLong(loginSettings.fileModDateMillisTime) < file.lastModified() || loginSettings.forceFile) {
                 if (minutesSinceLastMod >= loginSettings.minimumFileAgeMinutes) {
 
                     processFile(loginSettings, file, channelSftp)
@@ -101,13 +101,13 @@ class Upload {
 
 
     fun archiveFile(loginSettings: LoginSettings,  file: File) {
-        if (loginSettings.archiveSource == "1") {
+        if (loginSettings.archiveSource) {
             Utils.archiveFilesLocal(loginSettings.localDirectoryPath, loginSettings.localDirectoryPath + file.name, loginSettings.localDirectoryPath + "/Archive/" + file.name)
         }
     }
 
     fun deleteFile(loginSettings: LoginSettings,  file: File) {
-        if (loginSettings.deleteSource == "1") {
+        if (loginSettings.deleteSource) {
             file.delete()
         }
     }
