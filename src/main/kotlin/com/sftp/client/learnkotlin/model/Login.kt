@@ -1,5 +1,5 @@
 package com.sftp.client.learnkotlin.model
 
-class Login(val login: MutableList<LoginSettings>) {
+class Login(var login: MutableList<LoginSettings>) {
 
 }
