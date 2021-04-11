@@ -108,6 +108,14 @@
             <option value="False">False</option>
         </select>
     </div>
+    <div class="form-group">
+        <label for="active">Active</label>
+        <select  class="form-control" id="active" required th:field="*{active}">
+            <option hidden value="False">Select</option>
+            <option value="True">True</option>
+            <option value="False">False</option>
+        </select>
+    </div>
     <div>
         <input class="btn btn-primary" type="submit" value="Add">
         <input class="btn btn-dark" type="reset" value="Reset">

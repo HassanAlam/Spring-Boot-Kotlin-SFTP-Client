@@ -1,26 +1,13 @@
 package com.sftp.client.learnkotlin.controller
 
+import com.sftp.client.learnkotlin.Start
 import com.sftp.client.learnkotlin.file.Cache
 import com.sftp.client.learnkotlin.model.LoginSettings
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
-import com.sftp.client.learnkotlin.Start
-import org.springframework.web.bind.annotation.RequestMethod
-import org.springframework.web.bind.annotation.RequestMapping
-import com.jcraft.jsch.UserInfo
-import org.apache.juli.logging.Log
-
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.servlet.view.RedirectView
-
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-
-
-
-
-
+import org.springframework.web.servlet.view.RedirectView
 
 
 @Controller
@@ -56,5 +43,18 @@ class WebController {
     }
 
     //delete and update method
+    @RequestMapping(path = ["/{id}"], method = [RequestMethod.POST])
+    fun updateSetting(redirectAttributes: RedirectAttributes, @PathVariable("id") id: String, @ModelAttribute loginSettings: LoginSettings): RedirectView {
 
+        for(login in Cache.settingsCache.login) {
+            if(login.id == id){
+                login.archiveSource = loginSettings.archiveSource
+                //todo
+            }
+        }
+        val message = "Updated"
+        val redirectView = RedirectView("/", true)
+        redirectAttributes.addFlashAttribute("userMessage", message)
+        return redirectView
+    }
 }
