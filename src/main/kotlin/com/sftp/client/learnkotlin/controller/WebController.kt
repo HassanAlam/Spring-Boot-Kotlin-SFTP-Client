@@ -2,6 +2,7 @@ package com.sftp.client.learnkotlin.controller
 
 import com.sftp.client.learnkotlin.Start
 import com.sftp.client.learnkotlin.file.Cache
+import com.sftp.client.learnkotlin.model.LoginDetails
 import com.sftp.client.learnkotlin.model.LoginSettings
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -48,8 +49,27 @@ class WebController {
 
         for(login in Cache.settingsCache.login) {
             if(login.id == id){
-                login.archiveSource = loginSettings.archiveSource
                 //todo
+                login.loginDetails.userName = loginSettings.loginDetails.userName
+                login.loginDetails.userPassword = loginSettings.loginDetails.userPassword
+                login.loginDetails.privateKeyFile = loginSettings.loginDetails.privateKeyFile
+                login.loginDetails.privateKeyPassword = loginSettings.loginDetails.privateKeyPassword
+                login.loginDetails.host = loginSettings.loginDetails.host
+                login.loginDetails.port = loginSettings.loginDetails.port
+                login.scheduledTime = loginSettings.scheduledTime
+                login.transactionType = loginSettings.transactionType
+                login.localDirectoryPath = loginSettings.localDirectoryPath
+                login.remoteDirectoryPath = loginSettings.remoteDirectoryPath
+                login.fileName = loginSettings.fileName
+                login.deleteSource = loginSettings.deleteSource
+                login.minimumFileAgeMinutes = loginSettings.minimumFileAgeMinutes
+                login.fileModDateTime = loginSettings.fileModDateTime
+                login.fileModDateMillisTime = loginSettings.fileModDateMillisTime
+                login.archiveSource = loginSettings.archiveSource
+                login.addDateToEndOfFilename = loginSettings.addDateToEndOfFilename
+                login.unzipFile = loginSettings.unzipFile
+                login.forceFile = loginSettings.forceFile
+                login.active = loginSettings.active
             }
         }
         val message = "Updated"
