@@ -27,7 +27,7 @@ class Start : CommandLineRunner{
 
     override fun run(vararg args: String?) {
         println("start")
-       // customScheduler.scheduler(Cache.settingsCache)
+        customScheduler.scheduler(Cache.settingsCache)
         Save().saveToJsonFile(Cache.settingsCache)
     }
 

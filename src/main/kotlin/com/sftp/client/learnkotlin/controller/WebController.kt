@@ -72,6 +72,7 @@ class WebController {
                 login.active = loginSettings.active
             }
         }
+        start.writeCached()
         val message = "Updated"
         val redirectView = RedirectView("/", true)
         redirectAttributes.addFlashAttribute("userMessage", message)
