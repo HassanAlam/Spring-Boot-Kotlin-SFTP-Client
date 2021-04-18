@@ -112,8 +112,4 @@ class Upload {
         }
     }
 
-    fun isForce(force: String): Boolean {
-        return force == "1"
-    }
-
 }
