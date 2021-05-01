@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component
 class CustomScheduler {
 
 
-    fun scheduler(list: Login): Scheduler {
+    fun scheduler(list: Login, shutdown: Boolean): Scheduler {
 
         val stdSchedulerFactory = StdSchedulerFactory()
         stdSchedulerFactory.initialize(ClassPathResource("quartz.properties").inputStream)
@@ -21,20 +21,25 @@ class CustomScheduler {
         val scheduler: Scheduler = stdSchedulerFactory.scheduler
         scheduler.setJobFactory(SpringBeanJobFactory())
 
-        for(login in list.login){
-            if(login.active){
-            val job = JobBuilder.newJob(SftpJob::class.java).build()
-            job.jobDataMap["login"] = login
-            val trigger = TriggerBuilder.newTrigger().withIdentity(login.id).withSchedule(cronSchedule(login.scheduledTime)).forJob(job).build()
+        if (shutdown){
+            scheduler.shutdown(true);
 
-            try {
-                scheduler.scheduleJob(job, trigger)
-            } catch (e: SchedulerException) {
-                e.printStackTrace()
+        }else{
+            for(login in list.login){
+                if(login.active){
+                    val job = JobBuilder.newJob(SftpJob::class.java).build()
+                    job.jobDataMap["login"] = login
+                    val trigger = TriggerBuilder.newTrigger().withIdentity(login.id).withSchedule(cronSchedule(login.scheduledTime)).forJob(job).build()
+
+                    try {
+                        scheduler.scheduleJob(job, trigger)
+                    } catch (e: SchedulerException) {
+                        e.printStackTrace()
+                    }
+                }
             }
+            scheduler.start();
         }
-        }
-        scheduler.start();
         return scheduler;
     }
 

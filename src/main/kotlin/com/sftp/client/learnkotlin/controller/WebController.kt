@@ -29,6 +29,7 @@ class WebController {
         println(loginSettings.loginDetails.userName)
         Cache.settingsCache.login.add(loginSettings)
         start.writeCached()
+        start.restartScheduler()
         return "redirect:/"
     }
 
@@ -73,6 +74,7 @@ class WebController {
             }
         }
         start.writeCached()
+        start.restartScheduler()
         val message = "Updated"
         val redirectView = RedirectView("/", true)
         redirectAttributes.addFlashAttribute("userMessage", message)
