@@ -1,5 +1,3 @@
-Learning Kotlin by building an SFTP Client.
-
 # SFTP Client
 Lightweight SFTP client 
 
