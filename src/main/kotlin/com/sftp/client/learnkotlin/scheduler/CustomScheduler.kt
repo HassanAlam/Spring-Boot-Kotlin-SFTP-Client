@@ -6,10 +6,8 @@ import org.quartz.CronScheduleBuilder.cronSchedule
 import org.quartz.impl.StdSchedulerFactory
 import org.springframework.core.io.ClassPathResource
 import org.springframework.scheduling.quartz.SpringBeanJobFactory
-import org.springframework.stereotype.Component
 
 
-@Component
 class CustomScheduler {
 
 
